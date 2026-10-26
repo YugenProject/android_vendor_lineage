@@ -1022,3 +1022,11 @@ function build_kernel() {
     chmod -x "${target_kernel_dir}/"*
     echo "Kernel build output copied to ${target_kernel_dir}/"
 }
+
+# Show the distro version in the build banner instead of LineageOS's label.
+# The banner is produced by build/soong's hardcoded list, so relabel the line
+# here rather than carrying a fork of build/soong for one string.
+function printconfig()
+{
+    _get_build_var_cached report_config | sed 's|^LINEAGE_VERSION=|YUGEN_VERSION=|'
+}
