@@ -302,6 +302,16 @@ CUSTOM_LOCALES += \
 PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += vendor/crowdin/overlay
 PRODUCT_PACKAGE_OVERLAYS += vendor/crowdin/overlay
 
+# Cross-window / window background blur. Devices opt in with
+# TARGET_ENABLE_BLUR := true in their device makefile; this only exposes the
+# SurfaceFlinger capability, the per-window opt-in is done by the framework
+# (dialogs) and SystemUI (volume panel).
+TARGET_ENABLE_BLUR ?= false
+ifeq ($(TARGET_ENABLE_BLUR),true)
+PRODUCT_PRODUCT_PROPERTIES += \
+    ro.surface_flinger.supports_background_blur=1
+endif
+
 PRODUCT_EXTRA_RECOVERY_KEYS += \
     vendor/lineage/build/target/product/security/lineage
 
