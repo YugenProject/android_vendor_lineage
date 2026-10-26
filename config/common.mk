@@ -136,6 +136,10 @@ PRODUCT_PACKAGES += \
     bootanimation.zip \
     bootanimation-dark.zip
 
+# Launcher: enable background blur for the widget picker
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
+    ro.launcher.depth.widget=true
+
 # Lineage interfaces
 PRODUCT_PACKAGES += \
     framework_compatibility_matrix.lineage.xml
