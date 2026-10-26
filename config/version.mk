@@ -1,5 +1,8 @@
-PRODUCT_VERSION_MAJOR = 24
+PRODUCT_VERSION_MAJOR = 1
 PRODUCT_VERSION_MINOR = 0
+
+# Distro codename, surfaced in Settings > About phone
+LINEAGE_VERSION_CODENAME := akatsukui
 
 ifeq ($(LINEAGE_VERSION_APPEND_TIME_OF_DAY),true)
     LINEAGE_BUILD_DATE := $(shell date -u +%Y%m%d_%H%M%S)
@@ -42,4 +45,5 @@ PRODUCT_PRODUCT_PROPERTIES += \
     ro.lineage.version=$(LINEAGE_VERSION) \
     ro.lineage.display.version=$(LINEAGE_DISPLAY_VERSION) \
     ro.lineage.build.version=$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR) \
-    ro.lineage.releasetype=$(LINEAGE_BUILDTYPE)
+    ro.lineage.releasetype=$(LINEAGE_BUILDTYPE) \
+    ro.yugen.version.codename=$(LINEAGE_VERSION_CODENAME)
