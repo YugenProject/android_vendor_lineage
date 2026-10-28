@@ -1,0 +1,10 @@
+// MagicPortraitWallpapers (shipped by vendor/pixel/themepicker) loads
+// libtensorflowlite_jni.so from its own lib64 directory. Clover's
+// products/themepicker.mk lists a MagicPortraitSymLink module for this, but
+// no repo in their manifest defines it, so provide it here.
+install_symlink {
+    name: "MagicPortraitSymLink",
+    system_ext_specific: true,
+    installed_location: "priv-app/MagicPortraitWallpapers/lib/arm64/libtensorflowlite_jni.so",
+    symlink_target: "/system/lib64/libtensorflowlite_jni.so",
+}
