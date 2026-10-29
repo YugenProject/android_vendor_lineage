@@ -18,7 +18,15 @@ else
 endif
 
 # Yugen build type may be set through the environment or product configuration.
-# Accepted release types are RELEASE, NIGHTLY, SNAPSHOT, and EXPERIMENTAL.
+# Accepted release types are RELEASE (also spelled OFFICIAL), NIGHTLY, SNAPSHOT,
+# and EXPERIMENTAL. Anything else falls back to TEZUKURI.
+
+# Normalise the value so lower case input works, then accept OFFICIAL as RELEASE
+# so the release checks elsewhere keep working with a single spelling.
+YUGEN_BUILDTYPE := $(shell echo $(YUGEN_BUILDTYPE) | tr '[:lower:]' '[:upper:]')
+ifeq ($(YUGEN_BUILDTYPE),OFFICIAL)
+    YUGEN_BUILDTYPE := RELEASE
+endif
 
 # Maintainer name shown in Settings and build properties.
 YUGEN_MAINTAINER_NAME ?= Yugen Team
