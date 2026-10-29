@@ -17,23 +17,33 @@ else
     LINEAGE_BUILD_DATE := $(shell date -u +%Y%m%d)
 endif
 
-# Yugen build type may be set through the environment or product configuration.
-# Accepted release types are RELEASE (also spelled OFFICIAL), NIGHTLY, SNAPSHOT,
-# and EXPERIMENTAL. Anything else falls back to TEZUKURI.
+# Yugen build flags.
+#
+#   YUGEN_BUILDTYPE   build flavour, e.g. RELEASE (alias OFFICIAL), NIGHTLY,
+#                     SNAPSHOT, EXPERIMENTAL. Defaults to TEZUKURI.
+#   YUGEN_MAINTAINER  maintainer shown in Settings > About phone and in
+#                     ro.yugen.maintainer. YUGEN_MAINTAINER_NAME is kept as a
+#                     legacy alias.
+#
+# Both may be passed on the command line ("make YUGEN_BUILDTYPE=official") or
+# exported in the environment.
 
 # Normalise the value so lower case input works, then accept OFFICIAL as RELEASE
 # so the release checks elsewhere keep working with a single spelling.
-YUGEN_BUILDTYPE := $(shell echo $(YUGEN_BUILDTYPE) | tr '[:lower:]' '[:upper:]')
+override YUGEN_BUILDTYPE := $(strip $(shell echo $(YUGEN_BUILDTYPE) | tr '[:lower:]' '[:upper:]'))
 ifeq ($(YUGEN_BUILDTYPE),OFFICIAL)
-    YUGEN_BUILDTYPE := RELEASE
+    override YUGEN_BUILDTYPE := RELEASE
 endif
 
-# Maintainer name shown in Settings and build properties.
-YUGEN_MAINTAINER_NAME ?= Yugen Team
+# Maintainer name shown in Settings and build properties. Prefer the
+# YUGEN_MAINTAINER flag, fall back to the legacy name, then to the team.
+override YUGEN_MAINTAINER_NAME := $(strip $(if $(YUGEN_MAINTAINER),$(YUGEN_MAINTAINER),$(YUGEN_MAINTAINER_NAME)))
+override YUGEN_MAINTAINER_NAME := $(if $(YUGEN_MAINTAINER_NAME),$(YUGEN_MAINTAINER_NAME),Yugen Team)
+override YUGEN_MAINTAINER := $(YUGEN_MAINTAINER_NAME)
 
 # Filter out random types, so it'll reset to TEZUKURI
 ifeq ($(filter RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL,$(YUGEN_BUILDTYPE)),)
-    YUGEN_BUILDTYPE := TEZUKURI
+    override YUGEN_BUILDTYPE := TEZUKURI
     LINEAGE_EXTRAVERSION :=
 endif
 
